@@ -1,42 +1,43 @@
 export default class ArtyomCommandsManager {
-  // The ArtyomCommandsManager class expects as argument in the constructor
-  // an already declared instance of Artyom.js
   constructor(ArtyomInstance) {
     this._artyom = ArtyomInstance;
   }
 
-  // Execute the loadCommands method to inject the methods to the instance of Artyom
-  loadCommands() {
+  loadCommands = () => {
     let Artyom = this._artyom;
 
-    // Here you can load all the commands that you want to Artyom
     return Artyom.addCommands([
       {
-        indexes: ["Hello", "Hi"],
+        indexes: ["Hello", "Hi", "Hey There"],
         action: () => {
-          Artyom.say("Hello, how are you?");
+          console.log("Howdy Stranger!");
         }
       },
       {
         indexes: [/How are you/, /Regular expressions supported/],
         smart: true,
         action: () => {
-          Artyom.say("I'm fine, thanks for asking !");
+          console.log("I'm fine, thanks for asking !");
         }
       },
       {
-        indexes: ["Generate reports of * of this year"],
-        smart: true,
-        action: (i, month) => {
-          let year = new Date().getFullYear();
-
-          Artyom.say(`Generating reports of ${month} ${year} `);
-
-          Artyom.say(
-            "Ready ! What were you expecting? write some code you lazy bear !"
-          );
+        indexes: ["left"],
+        action: () => {
+          console.log(`moving left `);
+        }
+      },
+      {
+        indexes: ["right", "lights", "light", "like"],
+        action: () => {
+          console.log(`moving right `);
+        }
+      },
+      {
+        indexes: ["up"],
+        action: () => {
+          console.log(`moving up `);
         }
       }
     ]);
-  }
+  };
 }
