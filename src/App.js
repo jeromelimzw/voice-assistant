@@ -4,6 +4,7 @@ import { getCatFact } from "./static/catfact";
 import { getDogFact } from "./static/dogfact";
 import { getJoke } from "./static/jokesIndex";
 import { Table, Jumbotron } from "reactstrap";
+import simpleReplies from "./simpleReplies";
 const Thursday = new Artyom();
 
 class App extends React.Component {
@@ -22,7 +23,7 @@ class App extends React.Component {
   startAssistant = () => {
     Thursday.initialize({
       lang: "en-US",
-      debug: false,
+      debug: true,
       continuous: true,
       soundex: true,
       listen: true
@@ -40,11 +41,7 @@ class App extends React.Component {
             indexes: ["hear me"],
             action: () => {
               Thursday.redirectRecognizedTextOutput((recognized, isFinal) => {
-                if (isFinal) {
-                  this.setState({ recognizedText: recognized });
-                } else {
-                  this.setState({ recognizedText: recognized });
-                }
+                this.setState({ recognizedText: recognized });
               });
               Thursday.say("Yes, loud and clear");
               this.setState({
@@ -52,20 +49,7 @@ class App extends React.Component {
               });
             }
           },
-          {
-            indexes: ["how are you"],
-            action: () => {
-              Thursday.say("fine thank you");
-              this.setState({ screentext: "fine thank you" });
-            }
-          },
-          {
-            indexes: ["shut up"],
-            action: () => {
-              Thursday.say("fine");
-              Thursday.shutUp();
-            }
-          },
+
           {
             indexes: [
               "cat fact",
@@ -121,6 +105,17 @@ class App extends React.Component {
               this.setState({ screentext: "turning the lights on now" });
             }
           },
+          {
+            indexes: ["repeat after me"],
+            action: () => {
+              Thursday.say("ok i'll repeat what you say");
+              this.setState({ screentext: "ok i'll repeat what you say" });
+              setTimeout(() => {
+                Thursday.say(this.state.recognizedText);
+                this.setState({ screentext: this.state.recognizedText });
+              }, 15000);
+            }
+          },
 
           {
             indexes: ["alone"],
@@ -132,6 +127,26 @@ class App extends React.Component {
                 screentext: "I'll stop listening now."
               });
               Thursday.fatality();
+            }
+          },
+          {
+            indexes: [this.state.recognizedText],
+            action: () => {
+              const search = simpleReplies.find(a =>
+                a.command.find(a => a === this.state.recognizedText)
+              );
+              if (!search) {
+                Thursday.say("sorry, I didn't get that");
+                this.setState({
+                  screentext: "sorry, I didn't get that"
+                });
+              } else {
+                const reply = search.reply;
+                Thursday.say(reply);
+                this.setState({
+                  screentext: reply
+                });
+              }
             }
           }
         ]);
