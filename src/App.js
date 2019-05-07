@@ -68,7 +68,8 @@ class App extends React.Component {
               "dog fact",
               "fact about dogs",
               "facts about dogs",
-              "about dogs"
+              "about dogs",
+              "canines"
             ],
             action: () => {
               const dogfact = getDogFact();
@@ -167,22 +168,40 @@ class App extends React.Component {
     const { startAssistant } = this;
     return (
       <React.Fragment>
-        <Jumbotron dark>
+        <Jumbotron fluid>
           {artyomActive ? (
             <h1>Say 'leave me alone!' to stop listening</h1>
           ) : (
             <h1>Click the microphone to begin!</h1>
           )}
           <hr />
-          <i
-            className={`fa-10x fas ${
-              artyomActive
-                ? "fa-microphone"
-                : "fa-microphone-slash animated pulse infinite"
-            } tc pointer blue grow-large`}
-            disabled={artyomActive}
-            onClick={startAssistant}
-          />
+          <div className="flex justify-around">
+            <img
+              src={isBulbOn ? "img/bulb-on.png" : "img/bulb-off.png"}
+              alt=""
+              width="130"
+              height="200"
+              className="self-center"
+            />
+            <i
+              className={`fa-10x fas self-center ${
+                artyomActive
+                  ? "fa-microphone"
+                  : "fa-microphone-slash animated pulse infinite"
+              } tc pointer blue grow-large`}
+              disabled={artyomActive}
+              onClick={startAssistant}
+            />
+            <div className="mt3">
+              <h3>Suggestions:</h3>
+              <h4>"Can you hear me?"</h4>
+              <h4>"Tell me a joke"</h4>
+              <h4>"Tell me something about cats/canines"</h4>
+              <h4>"How are you?"</h4>
+              <h4>"Turn off the lights"</h4>
+              <h4>"Repeat after me"</h4>
+            </div>
+          </div>
         </Jumbotron>
 
         <Table dark className="tl f3">
@@ -201,12 +220,6 @@ class App extends React.Component {
             </tr>
           </tbody>
         </Table>
-        <img
-          src={isBulbOn ? "img/bulb-on.png" : "img/bulb-off.png"}
-          alt=""
-          width="200"
-        />
-        <img src="img/fan.gif" alt="" />
       </React.Fragment>
     );
   }
